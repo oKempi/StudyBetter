@@ -15,7 +15,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         return;
     }
     if (tabs.length === 0) {
-        console.error("No active tabs found.");
+        console.error("No active tabs found :(.");
         return;
     }
     var tab = tabs[0];
@@ -23,7 +23,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     if (illegalWebsites.some(site => url.includes(site))) {
         chrome.tabs.remove(tab.id, function () {
             if (chrome.runtime.lastError) {
-                console.error("Failed to close tab:", chrome.runtime.lastError);
+                console.error("Failed to close tab: ", chrome.runtime.lastError);
             }
         });
     }
@@ -33,7 +33,7 @@ chrome.tabs.onCreated.addListener(function (tab) {
     if (illegalWebsites.some(site => tab.url.includes(site))) {
         chrome.tabs.remove(tab.id, function () {
             if (chrome.runtime.lastError) {
-                console.error("Failed to close tab:", chrome.runtime.lastError);
+                console.error("Failed to close tab: ", chrome.runtime.lastError);
             }
         });
     }
@@ -43,7 +43,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (illegalWebsites.some(site => tab.url.includes(site))) {
         chrome.tabs.remove(tab.id, function () {
             if (chrome.runtime.lastError) {
-                console.error("Failed to close tab:", chrome.runtime.lastError);
+                console.error("Failed to close tab: ", chrome.runtime.lastError);
             }
         });
     }
