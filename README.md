@@ -7,6 +7,25 @@ This is a chrome extension to help you study better by immediately closing your 
 
 ## Here is a guide for setting the extension up:
 
+<br>
 
+> First, go here
+<br>
+<img src="README/guide_1.png">
+<br>
+
+> Or alternatively, go here (this should have been the first step, but I do it this way :P )
+<br>
+<img src="README/guide_2.0.png">
+<br>
+
+> Then, click on manage extensions
+<br>
+<img src="README/guide_2.png">
+<br>
+
+> Then, click on load unpacked
+<br>
+<img src="README/guide_3.png">
 
 ## Enjoy!
