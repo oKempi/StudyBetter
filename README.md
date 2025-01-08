@@ -5,4 +5,8 @@ This is a chrome extension to help you study better by immediately closing your 
 <br>
 > For the record, I do NOT know any javascript and this project was made using mostly copilot 
 
-# Enjoy!
+## Here is a guide for setting the extension up:
+
+
+
+## Enjoy!
