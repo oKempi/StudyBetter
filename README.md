@@ -14,7 +14,7 @@ This is a chrome extension to help you study better by immediately closing your 
 <img src="README/guide_1.png">
 <br>
 
-> Or alternatively, go here (this should have been the first step, but I do it this way :P )
+> Or alternatively, go here (this should have been the first step, but I decided to do it this way :P )
 <br>
 <img src="README/guide_2.0.png">
 <br>
