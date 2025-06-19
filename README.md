@@ -29,7 +29,7 @@ This is a chrome extension to help you study better by immediately closing your 
 <img src="README/guide_3.png">
 
 <br>
-After all of this, just select the whole folder containing the code (not Desktop or anything else, just the folder [most likely .zip] you got from downloading this.
+After all of this, just select the whole folder containing the code (not Desktop or anything else, just the folder [most likely .zip]) you got from downloading this.
 
 And you are done!
 
