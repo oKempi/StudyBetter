@@ -19,8 +19,17 @@ function getHostname(url) {
     }
 }
 
+let isPaused = false;
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'pauseBlocking') {
+        isPaused = !isPaused;
+        console.log('Blocking is now', isPaused ? 'paused' : 'active');
+    }
+});
+
 function checkTab(tab) {
-    if (!websitesLoaded) return;
+    if (!websitesLoaded || isPaused) return;
     const tabHost = getHostname(tab.url || '');
     if (illegalWebsites.some(site => tabHost === site)) {
         chrome.tabs.remove(tab.id, () => {
