@@ -1,50 +1,48 @@
 // Load the illegal websites (not actually illegal xD)
-var illegalWebsites = [];
+let illegalWebsites = [];
+let websitesLoaded = false;
 
 fetch(chrome.runtime.getURL('websites.txt'))
     .then(response => response.text())
     .then(data => {
         illegalWebsites = data.split('\n').map(site => site.trim()).filter(site => site.length > 0);
-        console.log('Loaded websites:', illegalWebsites);
+        websitesLoaded = true;
+        checkActiveTab();
     })
     .catch(error => console.error('Failed to load websites:', error));
 
-chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError);
-        return;
+function getHostname(url) {
+    try {
+        return new URL(url).hostname;
+    } catch {
+        return '';
     }
-    if (tabs.length === 0) {
-        console.error("No active tabs found :(.");
-        return;
-    }
-    var tab = tabs[0];
-    var url = tab.url || "";
-    if (illegalWebsites.some(site => url.includes(site))) {
-        chrome.tabs.remove(tab.id, function () {
-            if (chrome.runtime.lastError) {
-                console.error("Failed to close tab: ", chrome.runtime.lastError);
-            }
-        });
-    }
-});
+}
 
-chrome.tabs.onCreated.addListener(function (tab) {
-    if (illegalWebsites.some(site => tab.url.includes(site))) {
-        chrome.tabs.remove(tab.id, function () {
+function checkTab(tab) {
+    if (!websitesLoaded) return;
+    const tabHost = getHostname(tab.url || '');
+    if (illegalWebsites.some(site => tabHost === site)) {
+        chrome.tabs.remove(tab.id, () => {
             if (chrome.runtime.lastError) {
                 console.error("Failed to close tab: ", chrome.runtime.lastError);
             }
         });
     }
-});
+}
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    if (illegalWebsites.some(site => tab.url.includes(site))) {
-        chrome.tabs.remove(tab.id, function () {
-            if (chrome.runtime.lastError) {
-                console.error("Failed to close tab: ", chrome.runtime.lastError);
-            }
-        });
-    }
-});
+function checkActiveTab() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (chrome.runtime.lastError || tabs.length === 0) return;
+        checkTab(tabs[0]);
+    });
+}
+
+let debounceTimeout = null;
+function debounceCheck(tab) {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => checkTab(tab), 100);
+}
+
+chrome.tabs.onCreated.addListener(tab => debounceCheck(tab));
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => debounceCheck(tab));
